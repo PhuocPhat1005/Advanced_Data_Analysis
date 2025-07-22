@@ -28,7 +28,7 @@ class RatingAnalysis(object):
         else:
             raise ValueError("by_function must be either 'sum' or 'mean'")
 
-        return result
+        return result.to_json(orient='records', force_ascii=False)
 
     @staticmethod
     def getAvgRatingByFactors(df, rating_column="", factor_columns=""):
@@ -38,10 +38,10 @@ class RatingAnalysis(object):
         df = df[df[rating_column]>0]
 
         if isinstance(factor_columns, str):
-            factor_column = [factor_columns]
+            factor_columns = [factor_columns]
 
         result = (
-            df.groupby(factor_column)[rating_column]
+            df.groupby(factor_columns)[rating_column]
             .mean()
             .reset_index()
             .rename(columns={rating_column: "avg_rating"})
