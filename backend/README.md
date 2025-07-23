@@ -37,12 +37,12 @@ pip install -r requirements.txt
 ## ▶️ Chạy ứng dụng
 
 ```bash
-python main.py
+python app.py
 ```
 Hoặc:
 
 ```bash
-uvicorn main:app --reload
+uvicorn app:run_app --reload
 ```
 Server mặc định sẽ chạy tại:
 ```bash

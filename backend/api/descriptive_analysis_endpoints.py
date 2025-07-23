@@ -8,10 +8,10 @@ from process_data.descriptive_analysis.QuantityAnalysis import QuantityAnalysis
 from process_data.descriptive_analysis.RatingAnalysis import RatingAnalysis
 from process_data.descriptive_analysis.RevenueStatusAnalysis import RevenueStatusAnalysis
 
-da_router = APIRouter(prefix="/descriptive", tags=["Descriptive Analysis"])
+descriptive_router = APIRouter(prefix="/descriptive", tags=["Descriptive Analysis"])
 
 
-@da_router.get("/revenue/timeline", summary="Get revenue by timeline.")
+@descriptive_router.get("/revenue/timeline", summary="Get revenue by timeline.")
 def get_revenue_by_timeline(
         categorized_column: str = Query(..., description="Tên cột phân loại."),
         time_mode: str = Query("D", regex="^[DMY]$", description="Chế độ thời gian: D=ngày, M=tháng, Y=năm.")
@@ -29,7 +29,7 @@ def get_revenue_by_timeline(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@da_router.get("/revenue/total", summary="Get total revenue.")
+@descriptive_router.get("/revenue/total", summary="Get total revenue.")
 def get_total_revenue(
         categorized_column: str = Query(..., description="Tên cột phân loại."),
         min_date: str = Query(default="2016-01-01", description="Mốc thời gian tối thiểu YYYY-MM-DD, VD: 2016-01-01."),
@@ -49,7 +49,7 @@ def get_total_revenue(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@da_router.get("/products/quantity/grouped", summary="Get product quantity grouped by factors.")
+@descriptive_router.get("/products/quantity/grouped", summary="Get product quantity grouped by factors.")
 def get_quantity_by_group(
         factor_group_columns: List[str] = Query(..., description="Các cột phân nhóm (VD: category, region)."),
         min_date: str = Query("2016-01-01", description="Ngày bắt đầu (YYYY-MM-DD), VD: 2016-01-01."),
@@ -69,7 +69,7 @@ def get_quantity_by_group(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@da_router.get("/ratings/reviews/count/by-factor", summary="Get review count grouped by factor.")
+@descriptive_router.get("/ratings/reviews/count/by-factor", summary="Get review count grouped by factor.")
 def get_review_count_by_factor(
         factor_column: str = Query(..., description="Cột để phân nhóm."),
         by_function: Literal["sum", "mean"] = Query("sum", description="Hàm tổng hợp.")
@@ -86,7 +86,7 @@ def get_review_count_by_factor(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@da_router.get("/ratings/average/by-factors", summary="Get average rating by factors.")
+@descriptive_router.get("/ratings/average/by-factors", summary="Get average rating by factors.")
 def get_avg_rating_by_factors(
         factor_columns: List[str] = Query(..., description="Các cột để phân nhóm.")
 ):
@@ -101,7 +101,7 @@ def get_avg_rating_by_factors(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@da_router.get("/status/display/by-factor", summary="Get display status count by factor.")
+@descriptive_router.get("/status/display/by-factor", summary="Get display status count by factor.")
 def get_display_status_by_factor(
         factor_column: str = Query(..., description="Cột phân nhóm."),
         min_date: str = Query("2016-01-01", description="Ngày bắt đầu lọc (YYYY-MM-DD), VD: 2016-01-01."),
