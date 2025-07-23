@@ -18,7 +18,7 @@ from descriptive_analysis.DisplayStatusAnalysis import DisplayStatusAnalysis
 
 from diagnostic_analysis.StatusDiagnosticAnalysis import StatusDiagnosticAnalysis
 
-#df = pd.read_csv("D:/career/master/data_analysis/ck/Advanced_Data_Analyst/data/Status_RootCause.csv")
+
 
 #t = RevenueStatusAnalysis.getRevenueByTimeline(df, revenue_column="revenue", categorized_column="category", timeline_column="date_created", time_mode="M")
 #t = RevenueStatusAnalysis.getTotalRevenue(df, revenue_column="revenue", categorized_column="current_seller", date_column="date_created", max_date="2020-01-03")
@@ -43,10 +43,7 @@ from diagnostic_analysis.StatusDiagnosticAnalysis import StatusDiagnosticAnalysi
 #    min_date="2022-01-01",\
 #    max_date="2023-06-01"
 #    )
-#t = StatusDiagnosticAnalysis.diagnostic_analysis(df,
-#                                                 target_col="status",
-#                                                 factor_groups=["brand", "category", "brand", "has_video", "number_of_images", "name_length", "original_price"]
-#                                                 )
+
 #
 #print(t)
 #with open("./data/diagnostic_analysis.json", "w", encoding="utf-8") as f:
@@ -140,7 +137,7 @@ ax = sns.barplot(DF.head(10), y="category", x="review_count_sum")
 
 plt.show()"""
 
-
+"""
 df = pd.read_csv("D:/career/master/data_analysis/ck/Advanced_Data_Analyst/data/Products_DisplayStatus.csv")
 
 t = DisplayStatusAnalysis.getDisplayStatusByFactor(\
@@ -159,3 +156,19 @@ print(DF.head())
 ax = sns.barplot(DF.head(10), y="category", x="count", hue="status")
 
 plt.show()
+"""
+
+
+df = pd.read_csv("D:/career/master/data_analysis/ck/Advanced_Data_Analyst/data/Status_RootCause.csv")
+t = StatusDiagnosticAnalysis.diagnostic_analysis(df,\
+                                                 target_col="status",\
+                                                 factor_groups=["brand", "category", "brand", "has_video", "number_of_images", "name_length", "original_price"],\
+                                                 date_column="date_created",\
+                                                 min_date="2023-01-01",\
+                                                 max_date="2023-07-01"
+                                                 )
+#with open("./data/diagnostic_analysis.json", "w", encoding="utf-8") as f:
+#    json.dump(t, f, ensure_ascii=False, indent=2)
+content = StatusDiagnosticAnalysis.analyze_reason(t)
+
+print(content)
