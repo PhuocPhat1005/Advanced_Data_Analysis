@@ -1,11 +1,18 @@
-﻿class StatusDiagnosticAnalysis(object):
+﻿import google.generativeai as genai
+import numpy as np
+import pandas as pd
+from scipy.stats import ttest_ind, mannwhitneyu, chi2_contingency
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+
+
+class StatusDiagnosticAnalysis(object):
 
     def __init__(self):
         pass
 
     @staticmethod
     def get_feature_types(df, target_col, factor_groups=None):
-        import numpy as np
 
         if factor_groups is None:
             factor_groups = df.columns.drop(target_col).tolist()
@@ -16,8 +23,6 @@
 
     @staticmethod
     def calculate_distribution(df, target_col, numeric_cols, category_cols):
-        import pandas as pd
-
         dist = {}
         for col in numeric_cols:
             dist[col] = {
@@ -35,7 +40,8 @@
             try:
                 cross_tab = pd.crosstab(df[col], df[target_col], normalize='index') * 100
                 dist[col] = {
-                    'percentage_status_1': {str(k): float(v) for k, v in cross_tab.get(1, pd.Series()).to_dict().items()}
+                    'percentage_status_1': {str(k): float(v) for k, v in
+                                            cross_tab.get(1, pd.Series()).to_dict().items()}
                 }
             except Exception:
                 dist[col] = {'percentage_status_1': {}}
@@ -43,9 +49,6 @@
 
     @staticmethod
     def run_hypothesis_tests(df, target_col, numeric_cols, category_cols):
-        import pandas as pd
-        from scipy.stats import ttest_ind, mannwhitneyu, chi2_contingency
-
         tests = {}
         for col in numeric_cols:
             group0 = df[df[target_col] == 0][col].dropna()
@@ -77,11 +80,6 @@
 
     @staticmethod
     def analyze_feature_importance(df, target_col, numeric_cols, category_cols):
-        import pandas as pd
-        import numpy as np
-        from sklearn.linear_model import LogisticRegression
-        from sklearn.ensemble import RandomForestClassifier
-
         try:
             X = pd.get_dummies(df[numeric_cols + category_cols], columns=category_cols)
             X = X.fillna(0)
@@ -148,9 +146,9 @@
         return root_causes, recommendations
 
     @staticmethod
-    def diagnostic_analysis( 
-        df, 
-        target_col='status', 
+    def diagnostic_analysis(
+        df,
+        target_col='status',
         factor_groups=None,
         date_column=None,
         min_date=None,
@@ -175,10 +173,12 @@
         hypothesis_tests = StatusDiagnosticAnalysis.run_hypothesis_tests(df, target_col, numeric_cols, category_cols)
         print("Done hypothesis tests")
 
-        feature_importance = StatusDiagnosticAnalysis.analyze_feature_importance(df, target_col, numeric_cols, category_cols)
+        feature_importance = StatusDiagnosticAnalysis.analyze_feature_importance(df, target_col, numeric_cols,
+                                                                                 category_cols)
         print("Done feature importance")
 
-        root_causes, recommendations = StatusDiagnosticAnalysis.identify_root_causes(distribution, hypothesis_tests, feature_importance)
+        root_causes, recommendations = StatusDiagnosticAnalysis.identify_root_causes(distribution, hypothesis_tests,
+                                                                                     feature_importance)
         print("Done root cause analysis")
 
         return {
@@ -189,10 +189,9 @@
             'recommendations': recommendations
         }
 
-    @staticmethod 
-    def analyze_reason(reason_json):
-        import google.generativeai as genai
-        genai.configure(api_key="AIzaSyB16XnNIZWWLM9NcS5AGs59yvbRqll0-AA")
+    @staticmethod
+    def analyze_reason(reason_json, api_key):
+        genai.configure(api_key=api_key)
         model = genai.GenerativeModel("gemini-1.5-flash")
         question = f"Dưới đây là một dictionary chứa thông tin phân tích nguyên nhân trưng bày chết (status=1) từ nhiều đầu phân tích và học máy khác nhau. Hãy tóm tắt và trình bày ngắn gọn các nguyên nhân rút được từ thông tin này:\nNội dung như sau: \n{str(reason_json)}";
         answer = model.generate_content(question)

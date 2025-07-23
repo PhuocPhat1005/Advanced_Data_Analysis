@@ -42,7 +42,7 @@ python app.py
 Hoặc:
 
 ```bash
-uvicorn app:run_app --reload
+uvicorn app:app --reload
 ```
 Server mặc định sẽ chạy tại:
 ```bash

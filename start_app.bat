@@ -13,7 +13,7 @@ call %VENV_DIR%\Scripts\activate
 
 echo [+] Installing dependencies...
 pip install --upgrade pip
-pip install -r backend\requirements.txt
+pip install -r requirements.txt
 
 echo [+] Starting the app...
 python app.py

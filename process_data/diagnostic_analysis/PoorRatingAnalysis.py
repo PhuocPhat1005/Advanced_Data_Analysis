@@ -1,4 +1,11 @@
-﻿class PoorRatingAnalysis(object):
+﻿import google.generativeai as genai
+import pandas as pd
+from scipy.stats import mannwhitneyu, kruskal, spearmanr, pearsonr
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LinearRegression
+
+
+class PoorRatingAnalysis(object):
 
     def __init__(self):
         pass
@@ -20,8 +27,6 @@
 
     @staticmethod
     def run_statistical_tests(df, rating_col, numeric_cols, category_cols):
-        import pandas as pd
-        from scipy.stats import mannwhitneyu, kruskal, spearmanr, pearsonr
 
         low_group, high_group = PoorRatingAnalysis.split_rating_groups(df, rating_col)
         results = {}
@@ -54,12 +59,6 @@
 
     @staticmethod
     def run_feature_importance(df, rating_col, numeric_cols, category_cols):
-        import pandas as pd
-        import numpy as np
-        from sklearn.linear_model import LinearRegression
-        from sklearn.ensemble import RandomForestRegressor
-        from sklearn.inspection import permutation_importance
-
         X = pd.get_dummies(df[numeric_cols + category_cols], columns=category_cols)
         X = X.fillna(0)
         y = df[rating_col]
@@ -72,13 +71,13 @@
         rf.fit(X, y)
         rf_importance = dict(zip(X.columns, map(float, rf.feature_importances_)))
         print("\tDone rf importance")
-        #perm = permutation_importance(rf, X, y, n_repeats=10, random_state=42)
-        #perm_importance = dict(zip(X.columns, map(float, perm.importances_mean)))
+        # perm = permutation_importance(rf, X, y, n_repeats=10, random_state=42)
+        # perm_importance = dict(zip(X.columns, map(float, perm.importances_mean)))
 
         return {
             'linear_regression': lr_importance,
             'random_forest': rf_importance,
-            #'permutation_importance': perm_importance
+            # 'permutation_importance': perm_importance
         }
 
     @staticmethod
@@ -120,10 +119,8 @@
         min_date=None,
         max_date=None
     ):
-        import pandas as pd
-
         df = df.copy()
-        df = df[df[rating_col]>=1]
+        df = df[df[rating_col] >= 1]
 
         df[date_column] = pd.to_datetime(df[date_column])
         if min_date:
@@ -149,10 +146,10 @@
             'root_causes': root_causes,
             'recommendations': recommendations
         }
-    @staticmethod 
-    def analyze_reason(reason_json):
-        import google.generativeai as genai
-        genai.configure(api_key="AIzaSyB16XnNIZWWLM9NcS5AGs59yvbRqll0-AA")
+
+    @staticmethod
+    def analyze_reason(reason_json, api_key: str):
+        genai.configure(api_key=api_key)
         model = genai.GenerativeModel("gemini-1.5-flash")
         question = f"Dưới đây là một dictionary chứa thông tin phân tích nguyên nhân một sản phẩm đánh giá trung bình tệ (điểm từ 1 đến dưới 3) từ nhiều đầu phân tích và học máy khác nhau. Hãy tóm tắt và trình bày ngắn gọn các nguyên nhân rút được từ thông tin này:\nNội dung như sau: \n{str(reason_json)}";
         answer = model.generate_content(question)
