@@ -192,7 +192,7 @@
     @staticmethod 
     def analyze_reason(reason_json):
         import google.generativeai as genai
-        genai.configure(api_key="AIzaSyB16XnNIZWWLM9NcS5AGs59yvbRqll0-AA")
+        genai.configure(api_key="...")
         model = genai.GenerativeModel("gemini-1.5-flash")
         question = f"Dưới đây là một dictionary chứa thông tin phân tích nguyên nhân trưng bày chết (status=1) từ nhiều đầu phân tích và học máy khác nhau. Hãy tóm tắt và trình bày ngắn gọn các nguyên nhân rút được từ thông tin này:\nNội dung như sau: \n{str(reason_json)}";
         answer = model.generate_content(question)
