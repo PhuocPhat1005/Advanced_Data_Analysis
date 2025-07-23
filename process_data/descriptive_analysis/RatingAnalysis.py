@@ -1,12 +1,10 @@
 class RatingAnalysis(object):
 
-    def __init__():
+    def __init__(self):
         return
 
     @staticmethod
     def getReviewCountByFactor(df, review_count_column="", factor_column="", by_function="sum"):
-        import pandas as pd
-
         df = df.copy()
 
         df = df[df[review_count_column] > 0]
@@ -28,14 +26,12 @@ class RatingAnalysis(object):
         else:
             raise ValueError("by_function must be either 'sum' or 'mean'")
 
-        return result.to_json(orient='records', force_ascii=False)
+        return result.to_dict(orient='records')
 
     @staticmethod
     def getAvgRatingByFactors(df, rating_column="", factor_columns=""):
-        import pandas as pd
-
         df = df.copy()
-        df = df[df[rating_column]>0]
+        df = df[df[rating_column] > 0]
 
         if isinstance(factor_columns, str):
             factor_columns = [factor_columns]
@@ -47,4 +43,4 @@ class RatingAnalysis(object):
             .rename(columns={rating_column: "avg_rating"})
         )
 
-        return result.to_json(orient='records', force_ascii=False)
+        return result.to_dict(orient='records')

@@ -1,12 +1,12 @@
+import pandas as pd
+
+
 class RevenueStatusAnalysis(object):
-
-    def __init__():
-
-        return;
+    def __init__(self):
+        return
 
     @staticmethod
     def getRevenueByTimeline(df, revenue_column="", categorized_column="", timeline_column="", time_mode="D"):
-        import pandas as pd
         df = df.copy()
         df[timeline_column] = pd.to_datetime(df[timeline_column])
         if time_mode == "D":
@@ -25,19 +25,18 @@ class RevenueStatusAnalysis(object):
         result = df.groupby(group_by_cols)[revenue_column].sum().reset_index()
         result = result.rename(columns={revenue_column: "total_revenue"})
 
-        return result.to_json(orient='records', force_ascii=False)
+        return result.to_dict(orient='records')
 
     @staticmethod
-    def getTotalRevenue(df, revenue_column="", categorized_column="", date_column="", min_date="2016-01-01", max_date=""):
-        import pandas as pd
-
+    def getTotalRevenue(df, revenue_column="", categorized_column="", date_column="", min_date="2016-01-01",
+                        max_date=""):
         df = df.copy()
 
         df[date_column] = pd.to_datetime(df[date_column])
         df = df[
             (df[date_column] >= pd.to_datetime(min_date)) &
             (df[date_column] <= pd.to_datetime(max_date))
-        ]
+            ]
 
         if categorized_column != "":
             result = (
@@ -50,7 +49,5 @@ class RevenueStatusAnalysis(object):
             total = df[revenue_column].sum()
             result = pd.DataFrame([{"total_revenue": total}])
 
-        return result.to_json(orient='records', force_ascii=False)
-
-
-
+        # return result.to_json(orient='records', force_ascii=False)
+        return result.to_dict(orient='records')
