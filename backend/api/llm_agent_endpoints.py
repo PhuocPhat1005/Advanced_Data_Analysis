@@ -5,9 +5,8 @@ import os, asyncio
 from dotenv import load_dotenv
 import pandas as pd
 
-# Nếu utils ở trong backend/
 from backend.agent_factory import create_df_agent
-from utils.utils import GLOBAL_DFS, load_csv_to_df, summarize_df
+from utils.utils import GLOBAL_DFS, DEFAULT_DFS_NAMES, load_csv_to_df, summarize_df
 
 load_dotenv()
 assert "GOOGLE_API_KEY" in os.environ, "Vui lòng set GOOGLE_API_KEY"
@@ -114,3 +113,18 @@ async def upload(req: UploadRequest):
         "summary": summary
     }
 
+@llm_agent_router.get(
+    "/defaults",
+    summary="Lấy danh sách DataFrame gốc và summary"
+)
+async def get_defaults():
+    """
+    Trả về JSON list các object {name, summary} cho từng DataFrame gốc.
+    """
+    try:
+        return [
+            {"name": name, "summary": summarize_df(GLOBAL_DFS[name])}
+            for name in DEFAULT_DFS_NAMES
+        ]
+    except Exception as e:
+        raise HTTPException(500, detail=f"Error khi lấy defaults: {e}")
