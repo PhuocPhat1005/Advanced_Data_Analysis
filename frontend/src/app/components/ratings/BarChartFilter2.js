@@ -1,55 +1,36 @@
 import React, { useId } from "react";
+import DatePicker from "react-datepicker";
 import Select from "react-select";
 
-const BarChartFilters1 = ({
+const BarChartFilters2 = ({
   selectedColumn,
   onColumnChange,
-  selectedMethods,
-  onMethodChange,
   selectedCategories,
   onCategoriesChange,
   dataOptions,
-  columnOptions,
-  methodOptions,
 }) => {
   const columnSelectId = useId();
-  const methodSelectId = useId();
   const categorySelectId = useId();
 
   return (
     <div className="flex flex-wrap gap-4 items-center">
-      <div className="w-48">
+      <div className="flex-1">
         <label htmlFor={columnSelectId} className="block text-sm font-medium">
           Column
         </label>
         <Select
           instanceId={columnSelectId}
           inputId={columnSelectId}
-          options={columnOptions}
+          options={dataOptions}
           value={selectedColumn}
           onChange={(val) => {
             onColumnChange(val)
+
           }}
         />
       </div>
 
       <div className="w-48">
-        <label htmlFor={methodSelectId} className="block text-sm font-medium">
-          Method
-        </label>
-        <Select
-          instanceId={methodSelectId}
-          inputId={methodSelectId}
-          options={methodOptions}
-          value={selectedMethods}
-          onChange={(val) => {
-            onMethodChange(val);
-            onCategoriesChange([]);
-          }}
-        />
-      </div>
-
-      <div className="w-48 flex-1">
         <label htmlFor={categorySelectId} className="block text-sm font-medium">
           Category
         </label>
@@ -57,18 +38,12 @@ const BarChartFilters1 = ({
           instanceId={categorySelectId}
           inputId={categorySelectId}
           options={dataOptions}
-          isMulti
           value={selectedCategories}
-          onChange={(val) => {
-            const MAX = 5;
-            const limited = val.slice(0, MAX);
-            onCategoriesChange(limited || [])
-          }}
+          onChange={(val) => { onCategoriesChange(val) }}
         />
       </div>
-
     </div>
   );
 };
 
-export default BarChartFilters1;
+export default BarChartFilters2;
