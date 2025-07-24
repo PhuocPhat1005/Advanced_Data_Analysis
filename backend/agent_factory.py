@@ -28,8 +28,10 @@ def create_df_agent(dataframes: list, temperature: float, model_name: str):
     agent = create_pandas_dataframe_agent(
         llm=llm,
         df=df_input,
+        return_intermediate_steps=True,
+        agent_type="zero-shot-react-description",
         verbose=True,
-        return_intermediate_steps=False,
+        allow_dangerous_code=True,
         agent_executor_kwargs={
             "handle_parsing_errors": True,
             "early_stopping_method": "generate",
