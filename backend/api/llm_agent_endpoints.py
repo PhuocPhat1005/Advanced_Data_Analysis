@@ -18,6 +18,7 @@ class AskRequest(BaseModel):
     prompt_type: str
     custom_prompt: str = ""
     preset_key: str = ""
+    user_query: str = ""
     df_names: List[str]
 
 class UploadRequest(BaseModel):
@@ -26,32 +27,38 @@ class UploadRequest(BaseModel):
 
 @llm_agent_router.post("/ask", summary="Gửi câu hỏi tới LLM Agent")
 async def ask(req: AskRequest):
-    # 1. Chuẩn bị prompt
+    # 1. Chuẩn bị instruction (hướng dẫn agent) dựa trên prompt_type
     preset_map = {
-        "overview": "Tóm tắt thống kê chung của DataFrame đã upload.",
-        "compare": "So sánh dữ liệu giữa các DataFrame đã upload về số lượng, cột, thống kê.",
+        "overview": "Bạn là chuyên gia phân tích dữ liệu. Hãy tóm tắt thống kê chung của DataFrame đã upload.",
+        "compare": "Bạn là chuyên gia phân tích dữ liệu. Hãy so sánh dữ liệu giữa các DataFrame đã upload về số lượng, cột và thống kê.",
     }
     if req.prompt_type == "custom":
-        prompt = req.custom_prompt
+        instruction = req.custom_prompt.strip()
     elif req.prompt_type == "preset":
         if req.preset_key not in preset_map:
             raise HTTPException(400, detail=f"preset_key không hợp lệ: {req.preset_key}")
-        prompt = preset_map[req.preset_key]
+        instruction = preset_map[req.preset_key]
     else:
-        prompt = "Hãy tự động gợi ý các phân tích tiềm năng dựa trên DataFrame đã upload."
+        instruction = "Bạn là chuyên gia phân tích dữ liệu. Hãy tự động gợi ý các phân tích tiềm năng dựa trên DataFrame đã upload."
 
-    # 2. Lấy DataFrame
+    if not req.user_query.strip():
+        raise HTTPException(400, detail="`user_query` không được để trống.")
+
+    # 2. Kết hợp instruction với câu hỏi thực của user
+    full_prompt = f"{instruction}\n\nYêu cầu của người dùng: {req.user_query.strip()}"
+
+    # 3. Lấy DataFrame từ GLOBAL_DFS
     try:
         dfs = [GLOBAL_DFS[name] for name in req.df_names]
     except KeyError as e:
         raise HTTPException(400, detail=f"DataFrame không tồn tại: {e}")
 
-    # 3. Invoke agent trong executor, tránh block
+    # 4. Invoke agent trong executor để tránh block
     loop = asyncio.get_running_loop()
     try:
         answer = await loop.run_in_executor(
             None,
-            lambda: create_df_agent(dfs, req.model).invoke(prompt)
+            lambda: create_df_agent(dfs, req.model).invoke(full_prompt)
         )
     except Exception as e:
         raise HTTPException(500, detail=f"LLM Agent error: {e}")
@@ -73,17 +80,17 @@ async def upload(req: UploadRequest):
     # 2. Thử decode & load CSV
     try:
         df = load_csv_to_df(req.df_name, req.csv_content)
-    except ValueError as e:
-        # load_csv_to_df có thể ném ValueError khi decode base64
-        raise HTTPException(
-            status_code=400,
-            detail=f"Không thể decode base64: {e}"
-        )
     except pd.errors.EmptyDataError as e:
         # pandas ném lỗi khi CSV rỗng
         raise HTTPException(
             status_code=400,
             detail=f"CSV rỗng hoặc không có dữ liệu: {e}"
+        )
+    except ValueError as e:
+        # load_csv_to_df có thể ném ValueError khi decode base64
+        raise HTTPException(
+            status_code=400,
+            detail=f"Không thể decode base64: {e}"
         )
     except pd.errors.ParserError as e:
         # lỗi phân tích cú pháp CSV

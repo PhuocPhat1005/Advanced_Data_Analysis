@@ -98,9 +98,10 @@ if query:
             "prompt_type": prompt_type,
             "custom_prompt": custom_prompt,
             "preset_key": preset_key,
+            "user_query": query,
             "df_names": list(st.session_state.dfs.keys())
         }
-        res = requests.post(f"{BACKEND}/llm_agent/ask", json=payload)
+        res = requests.post(f"{BACKEND}/ai_agent/llm_agent/ask", json=payload)
 
     if res.ok:
         full_resp = res.json().get("answer", "")
