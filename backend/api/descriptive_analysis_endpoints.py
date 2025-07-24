@@ -69,7 +69,7 @@ def get_quantity_by_group(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@descriptive_router.get("/ratings/reviews/count/by-factor", summary="Lấy số lượng ánh giá theo nhóm yếu tố.")
+@descriptive_router.get("/ratings/reviews/count/by-factor", summary="Lấy số lượng đánh giá theo nhóm yếu tố.")
 def get_review_count_by_factor(
         factor_column: str = Query(..., description="Cột để phân nhóm."),
         by_function: Literal["sum", "mean"] = Query("sum", description="Hàm tổng hợp.")
@@ -101,7 +101,7 @@ def get_avg_rating_by_factors(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@descriptive_router.get("/status/display/by-factor", summary="Get display status count by factor.")
+@descriptive_router.get("/status/display/by-factor", summary="Nhận số lượng sản phẩm theo từng trạng thái của nhân tố.")
 def get_display_status_by_factor(
         factor_column: str = Query(..., description="Cột phân nhóm."),
         min_date: str = Query("2016-01-01", description="Ngày bắt đầu lọc (YYYY-MM-DD), VD: 2016-01-01."),
