@@ -17,7 +17,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { colorGenerator } from "../utils/getColor";
 import { useState, useEffect } from "react";
-import BarChartFilters1 from "../components/products/BarChartFilters1";
+import BarChartFilters1 from "../components/products/BarChartFilters";
 
 ChartJS.register(
   TimeScale,

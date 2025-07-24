@@ -23,7 +23,7 @@ export default function Sidebar() {
         { label: "Sản phẩm", href: "/products", icon: BiBarChartAlt2 },
         { label: "Doanh thu", href: "/revenue", icon: RiMoneyDollarBoxFill },
         { label: "Status", href: "/status", icon: GrStatusGood},
-        { label: "Reviews", href: "/review", icon: IoChatbubbleOutline },
+        { label: "Ratings và reviews", href: "/review", icon: IoChatbubbleOutline },
       ],
     },
     {

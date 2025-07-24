@@ -54,7 +54,7 @@ const LineChartFilters = ({
           }}
         />
       </div>
-
+      
       <div className="w-40">
         <label htmlFor={modeSelectId} className="block text-sm font-medium">
           Mode

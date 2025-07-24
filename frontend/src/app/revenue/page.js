@@ -16,7 +16,6 @@ import {
 import "chartjs-adapter-date-fns";
 import { Bar, Line } from "react-chartjs-2";
 import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import "react-datepicker/dist/react-datepicker.css";
 import LineChartFilters from "../components/revenue/LineChartFilters";
 import BarChartFilters from "../components/revenue/BarChartFilters";
@@ -113,14 +112,14 @@ export default function DashboardPage() {
     const allLabels = [...new Set(filteredByCategory.map(getLabel))].filter(Boolean).sort();
     const categories = [...new Set(filteredByCategory.map(r => r[selectedColumnLine.value]))].slice(0, 5);
     const lineColorGen = colorGenerator();
-
+      
     const datasets = categories.map(cat => {
       const data = allLabels.map(label =>
         filteredByCategory
           .filter(r => getLabel(r) === label && r[selectedColumnLine.value] === cat)
           .reduce((sum, r) => sum + (r.total_revenue || 0), 0)
       );
-
+      
       return {
         label: cat,
         data,
@@ -193,7 +192,7 @@ export default function DashboardPage() {
     });
 
     setBarData({
-      labels: ['Doanh thu'],
+      labels: [''],
       datasets,
     });
   }, [rawBarRecords, selectedCategoriesBar, selectedColumnBar, selectedRange]);
