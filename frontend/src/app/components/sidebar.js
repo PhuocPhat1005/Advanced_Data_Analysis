@@ -20,7 +20,7 @@ export default function Sidebar() {
     {
       section: "Tổng quan",
       items: [
-        { label: "Số lượng bán", href: "/sales", icon: BiBarChartAlt2 },
+        { label: "Sản phẩm", href: "/products", icon: BiBarChartAlt2 },
         { label: "Doanh thu", href: "/revenue", icon: RiMoneyDollarBoxFill },
         { label: "Status", href: "/status", icon: GrStatusGood},
         { label: "Reviews", href: "/review", icon: IoChatbubbleOutline },
