@@ -2,11 +2,11 @@ from typing import List, Literal
 
 from fastapi import APIRouter, Query, HTTPException
 
-from backend import dataset
 from process_data.descriptive_analysis.DisplayStatusAnalysis import DisplayStatusAnalysis
 from process_data.descriptive_analysis.QuantityAnalysis import QuantityAnalysis
 from process_data.descriptive_analysis.RatingAnalysis import RatingAnalysis
 from process_data.descriptive_analysis.RevenueStatusAnalysis import RevenueStatusAnalysis
+from utils.utils import GLOBAL_DFS
 
 descriptive_router = APIRouter(prefix="/descriptive", tags=["Descriptive Analysis"])
 
@@ -18,7 +18,7 @@ def get_revenue_by_timeline(
 ):
     try:
         result = RevenueStatusAnalysis().getRevenueByTimeline(
-            dataset.product_revenue_df,
+            GLOBAL_DFS["Products_Revenue.csv"],
             "revenue",
             categorized_column,
             "date_created",
@@ -37,7 +37,7 @@ def get_total_revenue(
 ):
     try:
         result = RevenueStatusAnalysis().getTotalRevenue(
-            dataset.product_revenue_df,
+            GLOBAL_DFS["Products_Revenue.csv"],
             "revenue",
             categorized_column,
             "date_created",
@@ -57,7 +57,7 @@ def get_quantity_by_group(
 ):
     try:
         result = QuantityAnalysis().getQuantityOfProductsByFactorGroup(
-            dataset.product_quantity_df,
+            GLOBAL_DFS["Products_Quantity.csv"],
             "quantity_sold",
             factor_group_columns,
             "date_created",
@@ -76,7 +76,7 @@ def get_review_count_by_factor(
 ):
     try:
         result = RatingAnalysis().getReviewCountByFactor(
-            dataset.product_rating_df,
+            GLOBAL_DFS["Products_Rating.csv"],
             "review_count",
             factor_column,
             by_function
@@ -92,7 +92,7 @@ def get_avg_rating_by_factors(
 ):
     try:
         result = RatingAnalysis().getAvgRatingByFactors(
-            dataset.product_rating_df,
+            GLOBAL_DFS["Products_Rating.csv"],
             "rating_average",
             factor_columns
         )
@@ -109,7 +109,7 @@ def get_display_status_by_factor(
 ):
     try:
         result = DisplayStatusAnalysis().getDisplayStatusByFactor(
-            dataset.product_display_status_df,
+            GLOBAL_DFS["Products_DisplayStatus.csv"],
             "status",
             factor_column,
             "date_created",

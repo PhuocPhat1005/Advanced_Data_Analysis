@@ -7,9 +7,8 @@ from starlette.middleware.cors import CORSMiddleware
 
 from backend.api.descriptive_analysis_endpoints import descriptive_router
 from backend.api.diagnostic_analysis_endponts import diagnostic_router
-from backend.api.predictive_analysis_endpoints import predictive_router
-from backend.api.prescriptive_analysis_endpoints import prescriptive_router
 from backend.api.llm_agent_endpoints import llm_agent_router
+from backend.api.predictive_analysis_endpoints import predictive_router
 
 
 class Settings(BaseSettings):
@@ -24,6 +23,7 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
+
 
 settings = Settings()
 
@@ -53,7 +53,6 @@ def create_app() -> FastAPI:
     app.include_router(descriptive_router, prefix="/analysis")
     app.include_router(diagnostic_router, prefix="/analysis")
     app.include_router(predictive_router, prefix="/analysis")
-    app.include_router(prescriptive_router, prefix="/analysis")
     app.include_router(llm_agent_router, prefix="/ai_agent")
     return app
 

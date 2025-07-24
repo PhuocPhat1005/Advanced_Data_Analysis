@@ -1,11 +1,13 @@
+import os
+
 from dotenv import load_dotenv
 from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
 from langchain_google_genai import ChatGoogleGenerativeAI
-import os
 
 # Load biến môi trường từ .env
 load_dotenv()
 assert os.getenv("GOOGLE_API_KEY"), "Vui lòng set GOOGLE_API_KEY trong .env"
+
 
 def create_df_agent(dataframes: list, temperature: float, model_name: str):
     """

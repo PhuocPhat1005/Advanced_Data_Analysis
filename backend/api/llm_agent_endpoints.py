@@ -1,9 +1,11 @@
+import asyncio
+import os
+from typing import List
+
+import pandas as pd
+from dotenv import load_dotenv
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from typing import List
-import os, asyncio
-from dotenv import load_dotenv
-import pandas as pd
 
 from backend.agent_factory import create_df_agent
 from utils.utils import GLOBAL_DFS, DEFAULT_DFS_NAMES, load_csv_to_df, summarize_df
@@ -13,6 +15,7 @@ assert "GOOGLE_API_KEY" in os.environ, "Vui lòng set GOOGLE_API_KEY"
 
 llm_agent_router = APIRouter(prefix="/llm_agent", tags=["LLM Agent"])
 
+
 class AskRequest(BaseModel):
     model: str
     prompt_type: str
@@ -21,9 +24,11 @@ class AskRequest(BaseModel):
     user_query: str = ""
     df_names: List[str]
 
+
 class UploadRequest(BaseModel):
     df_name: str
     csv_content: str
+
 
 @llm_agent_router.post("/ask", summary="Gửi câu hỏi tới LLM Agent")
 async def ask(req: AskRequest):
@@ -82,6 +87,7 @@ async def ask(req: AskRequest):
 
     return {"answer": answer["output"]}
 
+
 @llm_agent_router.post(
     "/upload",
     summary="Upload và tóm tắt DataFrame",
@@ -136,6 +142,7 @@ async def upload(req: UploadRequest):
         "name": req.df_name,
         "summary": summary
     }
+
 
 @llm_agent_router.get(
     "/defaults",

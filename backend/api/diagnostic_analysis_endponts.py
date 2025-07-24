@@ -6,9 +6,9 @@ from fastapi import APIRouter, HTTPException, UploadFile, File, Header
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
-from backend import dataset
 from process_data.diagnostic_analysis.PoorRatingAnalysis import PoorRatingAnalysis
 from process_data.diagnostic_analysis.StatusDiagnosticAnalysis import StatusDiagnosticAnalysis
+from utils.utils import GLOBAL_DFS
 
 diagnostic_router = APIRouter(prefix="/diagnostic", tags=["Diagnostic Analysis"])
 
@@ -23,7 +23,7 @@ class AnalyzeReasonRequest(BaseModel):
 def analyze(request: AnalyzeReasonRequest):
     try:
         result = PoorRatingAnalysis().analyze(
-            dataset.rating_root_cause_df,
+            GLOBAL_DFS["Rating_RootCause.csv"],
             rating_col="rating_average",
             factor_groups=request.factor_groups,
             date_column="date_created",
@@ -72,7 +72,7 @@ async def analyze_reason_by_llm(
 def analyze_status(request: AnalyzeReasonRequest):
     try:
         result = StatusDiagnosticAnalysis().diagnostic_analysis(
-            dataset.status_root_cause_df,
+            GLOBAL_DFS["Status_RootCause.csv"],
             target_col="status",
             factor_groups=request.factor_groups,
             date_column="date_created",
