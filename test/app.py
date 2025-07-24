@@ -2,12 +2,13 @@ import os, json, base64, requests
 import streamlit as st
 from datetime import datetime
 
+# Đọc từ ENV hoặc dùng mặc định
 BACKEND = os.getenv("BACKEND_URL", "http://localhost:8000")
 HISTORY_FILE = "history/chat_history.json"
 
 st.set_page_config(page_title="📊 Tiki Data Analyzer", layout="wide")
 
-# Sidebar: chọn model & prompt
+# 1. Cấu hình model & prompt
 model_options = [
     "gemini-2.5-pro", "gemini-2.5-flash",
     "gemini-2.5-flash-lite", "gemini-2.0-flash",
@@ -16,24 +17,14 @@ model_options = [
 st.sidebar.title("Cài đặt chung")
 selected_model = st.sidebar.selectbox("Chọn Google Gemini model", model_options)
 
-prompt_type = st.sidebar.radio(
-    "Chọn loại prompt", ["custom", "preset", "suggest"]
-)
-if prompt_type == "custom":
-    custom_prompt = st.sidebar.text_area("Nhập prompt tuỳ chỉnh")
-else:
-    custom_prompt = ""
-if prompt_type == "preset":
-    preset_options = {
-        "overview": "Tóm tắt data chung",
-        "compare": "So sánh các DataFrame",
-        # thêm key nếu cần
-    }
-    preset_key = st.sidebar.selectbox("Chọn prompt mẫu", list(preset_options.keys()))
-else:
-    preset_key = ""
+prompt_type = st.sidebar.radio("Chọn loại prompt", ["custom", "preset", "suggest"])
+custom_prompt = st.sidebar.text_area("Nhập prompt tuỳ chỉnh") if prompt_type=="custom" else ""
+preset_key = st.sidebar.selectbox(
+    "Chọn prompt mẫu",
+    ["overview", "compare"]
+) if prompt_type=="preset" else ""
 
-# File uploader
+# 2. Upload CSV
 st.sidebar.markdown("---")
 uploaded = st.sidebar.file_uploader(
     "Upload CSV (nhiều file)", type="csv", accept_multiple_files=True
@@ -45,7 +36,11 @@ if uploaded:
     for f in uploaded:
         raw = f.read().decode("utf-8")
         b64 = base64.b64encode(raw.encode()).decode()
-        res = requests.post(f"{BACKEND}/upload", json={"name": f.name, "csv_content": b64})
+        # Gửi đúng payload key df_name
+        res = requests.post(
+            f"{BACKEND}/llm_agent/upload",
+            json={"df_name": f.name, "csv_content": b64}
+        )
         if res.ok:
             info = res.json()
             st.sidebar.success(f"Đã tải: {info['name']}")
@@ -53,22 +48,20 @@ if uploaded:
         else:
             st.sidebar.error(f"Upload lỗi: {res.text}")
 
-# Hiển thị summary mỗi DF
+# 3. Hiển thị summary
 if st.session_state.get("dfs"):
     for n, s in st.session_state.dfs.items():
         with st.expander(f"Summary: {n}"):
             st.text(s)
 
-# Chat history
+# 4. Chat history
 if "chat" not in st.session_state:
     st.session_state.chat = []
 
-# Nhập câu hỏi
 query = st.text_input("Nhập câu hỏi và Enter để gửi:", "")
 if query:
-    # Add user message
     st.session_state.chat.append({"role": "user", "text": query})
-    # Gọi API ask
+
     payload = {
         "model": selected_model,
         "prompt_type": prompt_type,
@@ -76,22 +69,22 @@ if query:
         "preset_key": preset_key,
         "df_names": list(st.session_state.dfs.keys())
     }
-    res = requests.post(f"{BACKEND}/ask", json=payload)
+    res = requests.post(f"{BACKEND}/llm_agent/ask", json=payload)
     if res.ok:
         resp = res.json()["answer"]
     else:
         resp = f"Error: {res.text}"
-    # Add agent message
+
     st.session_state.chat.append({"role": "assistant", "text": resp})
 
-# Render chat
+# 5. Render chat
 for msg in st.session_state.chat:
     if msg["role"] == "user":
         st.markdown(f"**Bạn:** {msg['text']}")
     else:
         st.markdown(f"**Agent:** {msg['text']}")
 
-# Lưu lịch sử ra file JSON
+# 6. Lưu lịch sử
 if st.button("Lưu lịch sử"):
     os.makedirs("history", exist_ok=True)
     record = {
