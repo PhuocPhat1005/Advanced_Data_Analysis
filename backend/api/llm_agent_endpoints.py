@@ -58,7 +58,7 @@ async def ask(req: AskRequest):
     try:
         answer = await loop.run_in_executor(
             None,
-            lambda: create_df_agent(dfs, req.model).invoke(full_prompt)
+            lambda: create_df_agent(dfs, 0.0, req.model).invoke(full_prompt)
         )
     except Exception as e:
         raise HTTPException(500, detail=f"LLM Agent error: {e}")
