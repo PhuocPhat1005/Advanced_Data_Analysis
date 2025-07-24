@@ -1,0 +1,8 @@
+fastapi~=0.116.1
+uvicorn~=0.35.0
+pydantic-settings~=2.10.1
+starlette~=0.46.2
+pandas~=2.3.1
+numpy~=1.26.4
+matplotlib~=3.10.1
+seaborn~=0.13.2
