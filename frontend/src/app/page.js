@@ -1,7 +1,5 @@
-import Image from "next/image";
-import HomeNavbar from "@/components/sidebar";
-import { redirect } from "next/dist/server/api-utils";
+import { redirect } from 'next/navigation';
 
 export default function Home() {
-  redirect("/dashboard");
+  redirect('/revenue');
 }

@@ -1,8 +1,15 @@
-fastapi~=0.116.1
-uvicorn~=0.35.0
-pydantic-settings~=2.10.1
-starlette~=0.46.2
-pandas~=2.3.1
-numpy~=1.26.4
-matplotlib~=3.10.1
-seaborn~=0.13.2
+# pip install -r requirements.txt
+fastapi==0.116.1
+uvicorn[standard]==0.35.0
+pandas==2.3.1
+langchain==0.0.220
+transformers==4.34.0
+huggingface-hub==0.16.4
+accelerate==0.24.0
+scipy==1.10.1
+scikit-learn==1.5.0
+google-generativeai==0.8.5
+python-multipart==0.0.20
+numpy==1.26.4
+pydantic==1.10.22
+starlette==0.47.2
