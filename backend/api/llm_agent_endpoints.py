@@ -80,7 +80,7 @@ async def ask(req: AskRequest):
         # Sau hết retry vẫn lỗi
         raise HTTPException(503, detail=f"Model overloaded sau {max_retries} lần thử: {last_err}")
 
-    return {"answer": answer}
+    return {"answer": answer["output"]}
 
 @llm_agent_router.post(
     "/upload",

@@ -20,9 +20,8 @@ import dynamic from "next/dynamic";
 import "react-datepicker/dist/react-datepicker.css";
 import LineChartFilters from "../components/revenue/LineChartFilters";
 import BarChartFilters from "../components/revenue/BarChartFilters";
-import { scale } from "framer-motion";
+import { colorGenerator } from "../utils/getColor";
 
-const Select = dynamic(() => import("react-select"), { ssr: false });
 
 ChartJS.register(
   CategoryScale,
@@ -36,6 +35,9 @@ ChartJS.register(
   Legend,
   Title
 );
+
+
+
 
 export default function DashboardPage() {
   // Line chart
@@ -62,20 +64,7 @@ export default function DashboardPage() {
   ];
 
 
-  const niceColors = [
-    "#4dc9f6",
-    "#f67019",
-    "#f53794",
-    "#537bc4",
-    "#acc236",
-    "#166a8f",
-    "#00a950",
-    "#58595b",
-    "#8549ba",
-  ];
-  function getRandomNiceColor() {
-    return niceColors[Math.floor(Math.random() * niceColors.length)];
-  }
+
 
   // Line fetch
   useEffect(() => {
@@ -84,7 +73,7 @@ export default function DashboardPage() {
 
       try {
         const res = await fetch(
-          `http://127.0.0.1:8000/descriptive/revenue/timeline?categorized_column=${selectedColumnLine.value}&time_mode=${selectedMode.value}`
+          `http://127.0.0.1:8000/analysis/descriptive/revenue/timeline?categorized_column=${selectedColumnLine.value}&time_mode=${selectedMode.value}`
         );
         const json = await res.json();
         if (Array.isArray(json.records)) {
@@ -123,6 +112,7 @@ export default function DashboardPage() {
     const getLabel = r => r.time_group?.slice(0, 10);
     const allLabels = [...new Set(filteredByCategory.map(getLabel))].filter(Boolean).sort();
     const categories = [...new Set(filteredByCategory.map(r => r[selectedColumnLine.value]))].slice(0, 5);
+    const lineColorGen = colorGenerator();
 
     const datasets = categories.map(cat => {
       const data = allLabels.map(label =>
@@ -134,8 +124,8 @@ export default function DashboardPage() {
       return {
         label: cat,
         data,
-        borderColor: getRandomNiceColor(),
-        backgroundColor: getRandomNiceColor(),
+        borderColor: lineColorGen.next().value,
+        // backgroundColor: lineColorGen.next().value,
         fill: false,
       };
     });
@@ -158,7 +148,7 @@ export default function DashboardPage() {
 
 
 
-      const url = `http://127.0.0.1:8000/descriptive/revenue/total?categorized_column=${key}&min_date=${minDate}&max_date=${maxDate}`;
+      const url = `http://127.0.0.1:8000/analysis/descriptive/revenue/total?categorized_column=${key}&min_date=${minDate}&max_date=${maxDate}`;
 
       try {
         const res = await fetch(url);
@@ -186,7 +176,9 @@ export default function DashboardPage() {
   useEffect(() => {
     if (!selectedColumnBar || !selectedRange?.[0] || !selectedRange?.[1]) return;
     if (!selectedCategoriesBar.length) return;
-
+    
+    const barColorGen = colorGenerator();
+    const key = selectedColumnBar.value;
 
     const datasets = selectedCategoriesBar.map(cat => {
       const total = rawBarRecords
@@ -196,7 +188,7 @@ export default function DashboardPage() {
       return {
         label: cat.label,
         data: [total],
-        backgroundColor: getRandomNiceColor(),
+        backgroundColor: barColorGen.next().value,
       };
     });
 
@@ -278,7 +270,7 @@ export default function DashboardPage() {
             selectedMode={selectedMode}
             onModeChange={setSelectedMode}
           />
-            
+
           <div className="mt-6 h-[500px] relative">
             <Line data={lineData} options={lineOptions} />
           </div>

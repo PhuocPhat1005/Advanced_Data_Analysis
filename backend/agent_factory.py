@@ -19,24 +19,15 @@ def create_df_agent(dataframes: list, temperature: float, model_name: str):
         temperature=temperature,
     )
 
-    # Nếu chỉ có 1 DF, dùng trực tiếp; nếu nhiều, bọc vào dict
-    if len(dataframes) == 1:
-        df_input = dataframes[0]
-    else:
-        df_input = {f"df_{i}": df for i, df in enumerate(dataframes)}
-
     agent = create_pandas_dataframe_agent(
         llm=llm,
-        df=df_input,
+        df=dataframes,
         return_intermediate_steps=True,
         agent_type="zero-shot-react-description",
         verbose=True,
         allow_dangerous_code=True,
         agent_executor_kwargs={
             "handle_parsing_errors": True,
-            "early_stopping_method": "generate",
-            "max_execution_time": 30,
-            "max_iterations": 3,
         },
     )
 
