@@ -55,13 +55,30 @@ async def ask(req: AskRequest):
 
     # 4. Invoke agent trong executor để tránh block
     loop = asyncio.get_running_loop()
-    try:
-        answer = await loop.run_in_executor(
-            None,
-            lambda: create_df_agent(dfs, 0.0, req.model).invoke(full_prompt)
-        )
-    except Exception as e:
-        raise HTTPException(500, detail=f"LLM Agent error: {e}")
+    max_retries = 3
+    delay = 2  # seconds
+    last_err = None
+    for attempt in range(1, max_retries + 1):
+        try:
+            answer = await loop.run_in_executor(
+                None,
+                lambda: create_df_agent(dfs, 0.0, req.model).invoke(full_prompt)
+            )
+            # Nếu thành công, break
+            break
+        except Exception as e:
+            last_err = e
+            err_msg = str(e)
+            # Nếu lỗi 503 model overloaded, retry
+            if "503" in err_msg or "overloaded" in err_msg.lower():
+                if attempt < max_retries:
+                    await asyncio.sleep(delay * attempt)
+                    continue
+            # Không retry với lỗi khác
+            raise HTTPException(500, detail=f"LLM Agent error: {e}")
+    else:
+        # Sau hết retry vẫn lỗi
+        raise HTTPException(503, detail=f"Model overloaded sau {max_retries} lần thử: {last_err}")
 
     return {"answer": answer}
 

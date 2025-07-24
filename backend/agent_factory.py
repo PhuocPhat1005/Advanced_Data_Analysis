@@ -1,11 +1,11 @@
 from dotenv import load_dotenv
-
 from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
-from langchain.agents.agent_types import AgentType
 from langchain_google_genai import ChatGoogleGenerativeAI
+import os
 
 # Load biến môi trường từ .env
 load_dotenv()
+assert os.getenv("GOOGLE_API_KEY"), "Vui lòng set GOOGLE_API_KEY trong .env"
 
 def create_df_agent(dataframes: list, temperature: float, model_name: str):
     """
@@ -13,20 +13,28 @@ def create_df_agent(dataframes: list, temperature: float, model_name: str):
     - dataframes: list các pandas.DataFrame đã load sẵn
     - model_name: tên model Gemini được chọn (vd. "gemini-2.5-pro")
     """
-
+    # Khởi llm
     llm = ChatGoogleGenerativeAI(
         model=model_name,
         temperature=temperature,
     )
-    
+
+    # Nếu chỉ có 1 DF, dùng trực tiếp; nếu nhiều, bọc vào dict
+    if len(dataframes) == 1:
+        df_input = dataframes[0]
+    else:
+        df_input = {f"df_{i}": df for i, df in enumerate(dataframes)}
+
     agent = create_pandas_dataframe_agent(
         llm=llm,
-        df=dataframes,
+        df=df_input,
         verbose=True,
-        allow_dangerous_code=True,
-        return_intermediate_steps=True,
+        return_intermediate_steps=False,
         agent_executor_kwargs={
-            "handle_parsing_errors": True
+            "handle_parsing_errors": True,
+            "early_stopping_method": "generate",
+            "max_execution_time": 30,
+            "max_iterations": 3,
         },
     )
 
