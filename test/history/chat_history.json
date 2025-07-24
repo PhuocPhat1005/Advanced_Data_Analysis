@@ -1,0 +1,34 @@
+{
+  "timestamp": "2025-07-24T20:04:26.782106",
+  "model": "gemini-2.5-pro",
+  "prompt_type": "custom",
+  "preset_key": "",
+  "included_dfs": [
+    "Products.csv",
+    "Products_DisplayStatus.csv",
+    "Products_Quantity.csv",
+    "Products_Rating.csv",
+    "Products_Revenue.csv",
+    "Products_Timeline.csv",
+    "Rating_RootCause.csv",
+    "Status_RootCause.csv"
+  ],
+  "chat": [
+    {
+      "role": "user",
+      "text": "Show me the price distribution of products"
+    },
+    {
+      "role": "assistant",
+      "text": "Error: {\"detail\":\"Not Found\"}"
+    },
+    {
+      "role": "user",
+      "text": "Show me the price distribution of products"
+    },
+    {
+      "role": "assistant",
+      "text": "Error: {\"detail\":\"LLM Agent error: create_df_agent() missing 1 required positional argument: 'model_name'\"}"
+    }
+  ]
+}
