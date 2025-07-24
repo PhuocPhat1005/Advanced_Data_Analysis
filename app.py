@@ -13,12 +13,12 @@ from backend.api.llm_agent_endpoints import llm_agent_router
 
 
 class Settings(BaseSettings):
-    APP_TITLE: str       = "Data Analysis Application"
-    APP_DESC: str        = "API for Data Analysis Application"
-    APP_VERSION: str     = "25.1"
-    HOST: str            = "127.0.0.1"
-    PORT: int            = 8000
-    RELOAD: bool         = True
+    APP_TITLE: str = "Data Analysis Application"
+    APP_DESC: str = "API for Data Analysis Application"
+    APP_VERSION: str = "25.1"
+    HOST: str = "127.0.0.1"
+    PORT: int = 8000
+    RELOAD: bool = True
     CORS_ORIGINS: list[str] = ["*"]
     GOOGLE_API_KEY: str  # ← thêm biến này
 
@@ -56,6 +56,8 @@ def create_app() -> FastAPI:
     app.include_router(prescriptive_router, prefix="/analysis")
     app.include_router(llm_agent_router, prefix="/ai_agent")
     return app
+
+
 app = create_app()
 
 if __name__ == "__main__":
