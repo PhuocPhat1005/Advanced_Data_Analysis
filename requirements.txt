@@ -13,3 +13,14 @@ python-multipart==0.0.20
 numpy==1.26.4
 pydantic==1.10.22
 starlette==0.47.2
+streamlit>=1.24.0
+transformers>=4.30.0
+accelerate>=0.19.0
+sentence-transformers>=2.2
+chromadb>=0.3.21
+opentelemetry-exporter-otlp-proto-http==1.31.1
+opentelemetry-exporter-otlp-proto-common==1.31.1
+opentelemetry-proto==1.31.1
+opentelemetry-sdk==1.31.1
+opentelemetry-semantic-conventions==0.52b1
+langchain-google-genai == 2.1.8
