@@ -1,5 +1,3 @@
-# frontend/app.py
-
 import os, json, base64, requests
 import streamlit as st
 from datetime import datetime
