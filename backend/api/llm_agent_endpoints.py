@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import List
 import os, asyncio
 from dotenv import load_dotenv
+import pandas as pd
 
 # Nếu utils ở trong backend/
 from backend.agent_factory import create_df_agent
