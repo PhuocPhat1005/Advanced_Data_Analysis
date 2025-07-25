@@ -1,4 +1,5 @@
 import json
+from dotenv import load_dotenv
 import os
 from typing import List
 
@@ -12,6 +13,9 @@ from utils.utils import GLOBAL_DFS
 
 diagnostic_router = APIRouter(prefix="/diagnostic", tags=["Diagnostic Analysis"])
 
+# load env
+load_dotenv()
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 class AnalyzeReasonRequest(BaseModel):
     factor_groups: List[str] = Field(..., description="Danh sách các nhóm phân tích.")
@@ -50,8 +54,11 @@ def analyze(request: AnalyzeReasonRequest):
 @diagnostic_router.post("/rating/llm", summary="Giải thích lý do dựa trên LLM.")
 async def analyze_reason_by_llm(
         file: UploadFile = File(..., description="File JSON đầu vào."),
-        api_key: str = Header(..., description="API key để gọi LLM.", alias="X-API-Key")
 ):
+    api_key = GOOGLE_API_KEY
+    if not api_key:
+        raise HTTPException(status_code=500, detail="GOOGLE_API_KEY không được cấu hình.")
+    
     if not file.filename.endswith(".json"):
         raise HTTPException(status_code=400, detail="Chỉ hỗ trợ file JSON.")
 
@@ -99,8 +106,11 @@ def analyze_status(request: AnalyzeReasonRequest):
 @diagnostic_router.post("/status/llm", summary="Giải thích lý do dựa trên LLM.")
 async def explain_status_by_llm(
         file: UploadFile = File(..., description="File JSON đầu vào."),
-        api_key: str = Header(..., description="API key để gọi LLM.", alias="X-API-Key")
 ):
+    api_key = GOOGLE_API_KEY
+    if not api_key:
+        raise HTTPException(status_code=500, detail="GOOGLE_API_KEY không được cấu hình.")
+    
     if not file.filename.endswith(".json"):
         raise HTTPException(status_code=400, detail="Chỉ hỗ trợ file JSON.")
 

@@ -25,3 +25,14 @@ def recommend(request: RecommendRequest):
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@predictive_router.get("/product-names", summary="Lấy danh sách tên sản phẩm duy nhất.")
+def get_product_names():
+    try:
+        df = GLOBAL_DFS["Product_Recommendation.csv"]
+        names = ProductsRecommendationAnalysis().list_product_names(
+            df, name_column="name"
+        )
+        return {"name_product": names}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
