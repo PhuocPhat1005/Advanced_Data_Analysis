@@ -71,7 +71,7 @@ model_options = [
 ]
 selected_model = st.sidebar.selectbox("Chọn model Gemini", model_options)
 
-prompt_type = st.sidebar.radio("Loại prompt", ["custom", "preset", "suggest"])
+prompt_type = st.sidebar.radio("Loại prompt", ["custom", "preset"])
 custom_prompt = st.sidebar.text_area("Nhập prompt tuỳ chỉnh") if prompt_type=="custom" else ""
 preset_key = st.sidebar.selectbox("Chọn prompt mẫu", ["overview","compare"]) if prompt_type=="preset" else ""
 
