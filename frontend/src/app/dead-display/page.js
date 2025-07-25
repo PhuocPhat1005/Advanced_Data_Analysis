@@ -9,7 +9,6 @@ import prettifyLLMResult from "../utils/llmPrettier";
 const columnOptions = [
   { value: "brand", label: "Brand" },
   { value: "category", label: "Category" },
-  { value: "current_seller", label: "Current Seller" },
   { value: "has_video", label: "Has Video" },
   { value: "number_of_images", label: "Number Of Images" },
   { value: "name_length", label: "Name Length" },

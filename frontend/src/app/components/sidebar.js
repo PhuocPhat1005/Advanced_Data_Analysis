@@ -23,14 +23,14 @@ export default function Sidebar() {
         { label: "Sản phẩm", href: "/products", icon: BiBarChartAlt2 },
         { label: "Doanh thu", href: "/revenue", icon: RiMoneyDollarBoxFill },
         { label: "Tình trạng", href: "/status", icon: GrStatusGood},
-        { label: "Ratings và reviews", href: "/review", icon: IoChatbubbleOutline },
+        { label: "Đánh giá", href: "/review", icon: IoChatbubbleOutline },
       ],
     },
     {
       section: "phân tích nguyên nhân",
       items: [
         { label: "Trưng bày chết", href: "/dead-display", icon: MdOutlineBugReport },
-        { label: "Review kém", href: "/bad-reviews", icon: MdOutlineReviews },
+        { label: "Đánh giá kém", href: "/bad-reviews", icon: MdOutlineReviews },
       ],
     },
     {
