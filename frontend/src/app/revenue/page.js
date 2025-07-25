@@ -254,6 +254,7 @@ export default function DashboardPage() {
   return (
     <div className="p-6 min-h-[calc(100vh-50px)]  overflow-hidden flex flex-col">
       <h1 className="text-2xl font-bold mb-4">PHÂN TÍCH DOANH THU</h1>
+      
       <div className="flex flex-col gap-6 ">
         {/* Line Chart Section */}
         <div className="bg-white shadow p-4 rounded-lg h-[610px] w-full">
@@ -269,7 +270,7 @@ export default function DashboardPage() {
             selectedMode={selectedMode}
             onModeChange={setSelectedMode}
           />
-
+          
           <div className="mt-6 h-[500px] relative">
             <Line data={lineData} options={lineOptions} />
           </div>
