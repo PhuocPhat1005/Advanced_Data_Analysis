@@ -40,7 +40,6 @@ ChartJS.register(
 
 export default function DashboardPage() {
   // Line chart
-  const [selectedDate, onDateChange] = useState(new Date('2016-01-01'));
   const [selectedColumnLine, setSelectedColumnLine] = useState(null);
   const [detailedColumnData, onDetailedColumnDataChange] = useState([]);
   const [selectedCategoriesLine, setSelectedCategoriesLine] = useState([]);
@@ -92,21 +91,21 @@ export default function DashboardPage() {
 
   // Line filter
   useEffect(() => {
-    if (!selectedColumnLine || !selectedDate) return;
+    if (!selectedColumnLine) return;
 
-    const selectedDateStr = selectedDate.toISOString().slice(0, 10);
     console.log("Raw records:", rawLineRecords);
 
-    const filteredByDate = rawLineRecords.filter(r => {
-      const ts = r.time_group;
-      return ts && ts.slice(0, 10) >= selectedDateStr;
-    });
+    // const selectedDateStr = selectedDate.toISOString().slice(0, 10);
+    // const filteredByDate = rawLineRecords.filter(r => {
+    //   const ts = r.time_group;
+    //   return ts && ts.slice(0, 10) >= selectedDateStr;
+    // });
 
     const filteredByCategory = selectedCategoriesLine.length
-      ? filteredByDate.filter(r =>
+      ? rawLineRecords.filter(r =>
         selectedCategoriesLine.some(c => c.value === r[selectedColumnLine.value])
       )
-      : filteredByDate;
+      : rawLineRecords;
 
     const getLabel = r => r.time_group?.slice(0, 10);
     const allLabels = [...new Set(filteredByCategory.map(getLabel))].filter(Boolean).sort();
@@ -130,7 +129,7 @@ export default function DashboardPage() {
     });
 
     setLineData({ labels: allLabels, datasets });
-  }, [rawLineRecords, selectedDate, selectedCategoriesLine, selectedColumnLine]);
+  }, [rawLineRecords, selectedCategoriesLine, selectedColumnLine]);
 
 
   // Bar fetch
@@ -254,12 +253,11 @@ export default function DashboardPage() {
   return (
     <div className="p-6 min-h-[calc(100vh-50px)]  overflow-hidden flex flex-col">
       <h1 className="text-2xl font-bold mb-4">PHÂN TÍCH DOANH THU</h1>
+      
       <div className="flex flex-col gap-6 ">
         {/* Line Chart Section */}
         <div className="bg-white shadow p-4 rounded-lg h-[610px] w-full">
           <LineChartFilters
-            selectedDate={selectedDate}
-            onDateChange={onDateChange}
             selectedColumn={selectedColumnLine}
             onColumnChange={setSelectedColumnLine}
             selectedCategories={selectedCategoriesLine}
@@ -269,7 +267,7 @@ export default function DashboardPage() {
             selectedMode={selectedMode}
             onModeChange={setSelectedMode}
           />
-
+          
           <div className="mt-6 h-[500px] relative">
             <Line data={lineData} options={lineOptions} />
           </div>

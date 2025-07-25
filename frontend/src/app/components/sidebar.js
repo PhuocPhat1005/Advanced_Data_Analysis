@@ -34,10 +34,9 @@ export default function Sidebar() {
       ],
     },
     {
-      section: "Gợi ý sản phẩm",
+      section: "Dự đoán nguyên nhân",
       items: [
-        { label: "Kết quả gợi ý", href: "/recommendations", icon: FaLightbulb },
-        { label: "Tuỳ chỉnh", href: "/customize", icon: MdDataset },
+        { label: "Dựa trên sản phẩm", href: "/recommendations", icon: FaLightbulb },
       ],
     },
     {

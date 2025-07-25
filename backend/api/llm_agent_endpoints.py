@@ -158,4 +158,4 @@ async def get_defaults():
             for name in DEFAULT_DFS_NAMES
         ]
     except Exception as e:
-        raise HTTPException(500, detail=f "Error khi lấy defaults: {e}")
+        raise HTTPException(500, detail=f"Error khi lấy defaults: {e}")

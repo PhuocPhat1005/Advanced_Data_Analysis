@@ -3,8 +3,6 @@ import DatePicker from "react-datepicker";
 import Select from "react-select";
 
 const LineChartFilters = ({
-  selectedDate, // date filter
-  onDateChange,
   selectedColumn, // column filter
   onColumnChange,
   selectedCategories, // pattern data from column filter
@@ -26,19 +24,6 @@ const LineChartFilters = ({
 
   return (
     <div className="flex flex-wrap gap-4 items-center">
-      <div>
-        <label className="block text-sm font-medium">Date</label>
-        <DatePicker
-          selected={selectedDate}
-          onChange={(date) => date && onDateChange(date)}
-          dateFormat="yyyy-MM-dd"
-          showMonthDropdown
-          showYearDropdown
-          dropdownMode="select"
-          className="border px-2 py-1 rounded"
-        />
-      </div>
-
       <div className="w-48">
         <label htmlFor={columnSelectId} className="block text-sm font-medium">
           Columns
