@@ -1,5 +1,4 @@
 import React, { useId } from "react";
-import DatePicker from "react-datepicker";
 import Select from "react-select";
 
 const BarChartFilters2 = ({
@@ -7,6 +6,7 @@ const BarChartFilters2 = ({
   onColumnChange,
   selectedCategories,
   onCategoriesChange,
+  columnOptions,
   dataOptions,
 }) => {
   const columnSelectId = useId();
@@ -14,23 +14,24 @@ const BarChartFilters2 = ({
 
   return (
     <div className="flex flex-wrap gap-4 items-center">
-      <div className="flex-1">
+      <div className="w-48 flex-1">
         <label htmlFor={columnSelectId} className="block text-sm font-medium">
           Column
         </label>
         <Select
           instanceId={columnSelectId}
           inputId={columnSelectId}
-          options={dataOptions}
+          options={columnOptions}
+          isMulti={false}
           value={selectedColumn}
           onChange={(val) => {
-            onColumnChange(val)
-
+            onColumnChange(val);
+            onCategoriesChange([]);
           }}
         />
       </div>
 
-      <div className="w-48">
+      <div className="flex-1">
         <label htmlFor={categorySelectId} className="block text-sm font-medium">
           Category
         </label>
@@ -38,8 +39,12 @@ const BarChartFilters2 = ({
           instanceId={categorySelectId}
           inputId={categorySelectId}
           options={dataOptions}
+          isMulti={true}
           value={selectedCategories}
-          onChange={(val) => { onCategoriesChange(val) }}
+          onChange={(val) => {
+            const limited = val.slice(0, 5);
+            onCategoriesChange(limited);
+          }}
         />
       </div>
     </div>
