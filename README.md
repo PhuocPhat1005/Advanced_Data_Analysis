@@ -20,6 +20,8 @@ streamlit run app.py
 - Python >= 3.11.9
 - pip
 - (Khuyến nghị) Virtual environment (venv)
+- node v22.14.0 (frontend)
+- npm 11.2.0 (frontend)
 
 ## 🛠️ Cài đặt
 
@@ -30,7 +32,7 @@ git clone https://github.com/PhuocPhat1005/Advanced_Data_Analysis.git
 cd advanced-data-analyst
 ```
 
-### 2. Tạo môi trường (nếu không dùng file .bat và .sh):
+### 2. Tạo môi trường cho server (nếu không dùng file .bat và .sh):
 #### 2.1. Tạo virtual environment:
 
 ```bash
@@ -45,17 +47,28 @@ venv\\Scripts\\activate   # Windows
 pip install -r requirements.txt
 ```
 
+### 3. Tạo môi trường cho UI (nếu không dùng file .bat và .sh):
+```bash
+npm install
+npm run build
+```
 
 ## ▶️ Chạy ứng dụng
 
 ### Cách 1. Sử dụng file .bat (Window) và .sh (Linux hoặc Mac):
+#### Window:
+
 ```bash
-start_app.bat # Window
-start_app.sh # Linux hoặc Mac
+start_app.bat
+```
+#### Linux hoặc MacOS:
+```bash
+chmod +x start_app.sh
+start_app.sh
 ```
 
-
 ### Cách 2. Sử dụng câu lệnh python:
+#### Chạy Server:
 
 ```bash
 python app.py
@@ -69,6 +82,15 @@ Server mặc định sẽ chạy tại:
 ```bash
 http://127.0.0.1:8000
 ```
+#### Chạy UI Server:
+```bash
+npm run start
+```
+UI Server mặc định sẽ chạy tại:
+```bash
+http://localhost:3000
+```
+
 ## 📘 Swagger UI
 Tài liệu API tự động (Swagger):
 
