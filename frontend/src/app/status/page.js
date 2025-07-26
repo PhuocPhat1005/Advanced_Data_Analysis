@@ -177,7 +177,7 @@ export default function StatusPage() {
         beginAtZero: true,
         title: {
           display: true,
-          text: "Số lượng",
+          text: "Số lượng sản phẩm (đơn vị: cái)",
         },
         ticks: {
           stepSize: 1,

@@ -141,7 +141,7 @@ export default function ProductPage() {
         beginAtZero: true,
         title: {
           display: true,
-          text: "Số lượng sản phẩm",
+          text: "Số lượng sản phẩm (đơn vị: cái)",
         },
       },
       y: {

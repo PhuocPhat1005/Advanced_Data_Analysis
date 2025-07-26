@@ -189,7 +189,7 @@ export default function ReviewPage() {
         beginAtZero: true,
         title: {
           display: true,
-          text: "",
+          text: "Số lượng đánh giá (đơn vị: lượt)",
         },
       },
       y: {
@@ -218,7 +218,7 @@ export default function ReviewPage() {
         beginAtZero: true,
         title: {
           display: true,
-          text: "",
+          text: "Số sao đánh giá",
         },
       },
       y: {

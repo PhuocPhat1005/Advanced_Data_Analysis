@@ -111,14 +111,14 @@ export default function DashboardPage() {
     const allLabels = [...new Set(filteredByCategory.map(getLabel))].filter(Boolean).sort();
     const categories = [...new Set(filteredByCategory.map(r => r[selectedColumnLine.value]))].slice(0, 5);
     const lineColorGen = colorGenerator();
-      
+
     const datasets = categories.map(cat => {
       const data = allLabels.map(label =>
         filteredByCategory
           .filter(r => getLabel(r) === label && r[selectedColumnLine.value] === cat)
           .reduce((sum, r) => sum + (r.total_revenue || 0), 0)
       );
-      
+
       return {
         label: cat,
         data,
@@ -174,7 +174,7 @@ export default function DashboardPage() {
   useEffect(() => {
     if (!selectedColumnBar || !selectedRange?.[0] || !selectedRange?.[1]) return;
     if (!selectedCategoriesBar.length) return;
-    
+
     const barColorGen = colorGenerator();
     const key = selectedColumnBar.value;
 
@@ -210,12 +210,20 @@ export default function DashboardPage() {
     },
     scales: {
       x: {
+        title: {
+          display: true,
+          text: 'Thời gian'
+        },
         type: 'time',
         time: {
           unit: 'month',
         },
       },
       y: {
+        title: {
+          display: true,
+          text: 'Doanh thu (đơn vị: VND)'
+        },
         beginAtZero: true,
       },
     },
@@ -237,7 +245,7 @@ export default function DashboardPage() {
         beginAtZero: true,
         title: {
           display: true,
-          text: "Doanh thu",
+          text: "Doanh thu (đơn vị: VND)",
         },
       },
       y: {
@@ -253,7 +261,7 @@ export default function DashboardPage() {
   return (
     <div className="p-6 min-h-[calc(100vh-50px)]  overflow-hidden flex flex-col">
       <h1 className="text-2xl font-bold mb-4">PHÂN TÍCH DOANH THU</h1>
-      
+
       <div className="flex flex-col gap-6 ">
         {/* Line Chart Section */}
         <div className="bg-white shadow p-4 rounded-lg h-[610px] w-full">
@@ -267,7 +275,7 @@ export default function DashboardPage() {
             selectedMode={selectedMode}
             onModeChange={setSelectedMode}
           />
-          
+
           <div className="mt-6 h-[500px] relative">
             <Line data={lineData} options={lineOptions} />
           </div>

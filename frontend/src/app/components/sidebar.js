@@ -34,7 +34,7 @@ export default function Sidebar() {
       ],
     },
     {
-      section: "Dự đoán nguyên nhân",
+      section: "DỰ ĐOÁN SẢN PHẨM",
       items: [
         { label: "Dựa trên sản phẩm", href: "/recommendations", icon: FaLightbulb },
       ],
@@ -49,7 +49,7 @@ export default function Sidebar() {
   
   return (
     <aside className="w-64 h-screen bg-white shadow-xl flex flex-col px-4 py-6">
-      <Link href="/overview" className="mb-8 mx-auto">
+      <Link href="/products" className="mb-8 mx-auto">
         <Image
           src="/logo.svg"
           alt="Logo"
