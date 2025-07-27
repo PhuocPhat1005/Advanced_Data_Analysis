@@ -81,7 +81,7 @@ export default function RecommendationPage() {
 
   return (
     <div className="p-6 min-h-[calc(100vh-50px)]  overflow-hidden flex flex-col">
-      <h1 className="text-2xl font-bold mb-4">GỢI Ý SẢM PHẨM</h1>
+      <h1 className="text-2xl font-bold mb-4">GỢI Ý SẢN PHẨM</h1>
       <div className="bg-white shadow p-4 rounded-lg h-[610px] w-full">
         <PredictiveFilter
           selectedColumn={selectedColumn}

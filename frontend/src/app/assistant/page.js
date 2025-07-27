@@ -156,7 +156,7 @@ export default function AssistantPage() {
         <div ref={bottomRef} />
 
       </div>
-
+      
       <div className="mt-4 flex items-center gap-2">
         <input
           type="text"

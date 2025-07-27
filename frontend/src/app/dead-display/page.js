@@ -206,7 +206,7 @@ export default function BadReviewsPage() {
               const url = URL.createObjectURL(blob);
               const a = document.createElement("a");
               a.href = url;
-              a.download = "bad_review_analysis.json";
+              a.download = "status_reason.json";
               a.click();
             }}
           >

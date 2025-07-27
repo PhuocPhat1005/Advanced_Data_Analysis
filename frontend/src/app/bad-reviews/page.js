@@ -30,7 +30,7 @@ export default function BadReviewsPage() {
       alert("Please select at least one column or date range");
       return;
     }
-
+    
     try {
       const response = await fetch("http://127.0.0.1:8000/analysis/diagnostic/rating", {
         method: "POST",
@@ -59,12 +59,12 @@ export default function BadReviewsPage() {
         type: "application/json",
       });
       formData.append("file", jsonBlob, "rating_reason.json");
-
+      
       const res = await fetch("http://127.0.0.1:8000/analysis/diagnostic/rating/llm", {
         method: "POST",
         body: formData,
       });
-
+      
       if (!res.ok) {
         const err = await res.text();
         throw new Error(err || "Request failed");
@@ -206,7 +206,7 @@ export default function BadReviewsPage() {
               const url = URL.createObjectURL(blob);
               const a = document.createElement("a");
               a.href = url;
-              a.download = "bad_review_analysis.json";
+              a.download = "rating_reason.json";
               a.click();
             }}
           >
