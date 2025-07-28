@@ -2,17 +2,6 @@
 Final Project for Course Data_Analysis
 
 Đầu tiên tạo file .env và set biến `GOOGLE_API_KEY = "your_google_api_key"`
-Sau đó, chạy server ở thư mục chính (cao nhất) bằng lệnh :
-
-```python
- uvicorn app:app --reload --port 8000
- ```
-Cuối cùng, test frontend bằng chạy lệnh:
-
-```bash
-cd test
-streamlit run app.py
-```
 
 ---
 
@@ -76,7 +65,7 @@ python app.py
 Hoặc:
 
 ```bash
-uvicorn app:app --reload
+uvicorn app:app --reload --port 800
 ```
 Server mặc định sẽ chạy tại:
 ```bash
@@ -84,6 +73,8 @@ http://127.0.0.1:8000
 ```
 #### Chạy UI Server:
 ```bash
+cd frontend
+npm run build
 npm run start
 ```
 UI Server mặc định sẽ chạy tại:
