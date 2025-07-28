@@ -1,4 +1,6 @@
-# Advanced_Data_Analyst
+# ĐỒ ÁN CUỐI KỲ : PHÂN TÍCH DỮ LIỆU THÔNG MINH
+## PHÁT TRIỂN HỆ THỐNG PHÂN TÍCH DỮ LIỆU TÍCH HỢP LLMs TRÊN TẬP DỮ LIỆU PHỤ KIỆN THỜI TRANG TIKI
+
 Final Project for Course Data_Analysis
 
 Đầu tiên tạo file .env và set biến `GOOGLE_API_KEY = "your_google_api_key"`
@@ -88,3 +90,16 @@ Tài liệu API tự động (Swagger):
 ```bash
 http://127.0.0.1:8000/docs
 ```
+
+---
+
+# TÀI LIỆU
+
+* GG DRIVE : [link here](https://drive.google.com/drive/folders/1oyUwp31QkCl0z3t0l3Ua4GbochOzat45?usp=sharing)
+* VIDEO : [link here](https://youtu.be/p4qmyA-IBH4)
+
+<!-- BEGIN YOUTUBE-CARDS -->
+[![Pattern Recognition](https://ytcards.demolab.com/?id=p4qmyA-IBH4&title=Phát+Triển+Hệ+Thống+Phân+Tích+Tự+Động+LLMs&lang=en&timestamp=p4qmyA-IBH4&background_color=%230d1117&title_color=%23ffffff&stats_color=%23dedede&max_title_lines=1&width=250&border_radius=5&duration=716 "Phát triển hệ thống phân tích tự động LLMs")](https://www.youtube.com/watch?v=p4qmyA-IBH4)
+<!-- END YOUTUBE-CARDS -->
+
+  
